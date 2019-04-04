@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 
+
+
 //var dataCardBike =[];
 
 /* GET home page. */
@@ -9,6 +11,12 @@ router.get('/', function(req, res, next) {
   if(req.session.dataCardBike  == undefined) {
     req.session.dataCardBike = [];
   }
+
+  // if(totalCmd  == undefined) {
+  //   totalCmd = [];
+  // }
+
+
   var dataBike = [
     {name: "Model BIKO45", url:"/images/bike-1.jpg", price: 679},
     {name: "Model ZOOK7", url:"/images/bike-2.jpg", price: 799},
@@ -17,6 +25,9 @@ router.get('/', function(req, res, next) {
     {name: "Model TITAN5", url:"/images/bike-5.jpg", price: 989},
     {name: "Model AMIG39", url:"/images/bike-6.jpg", price: 599}
   ]
+
+// var totalCmd = totalCmd +(req.session.dataCardBike[dataBike.price]*req.session.dataCardBike[dataBike.quantity]);
+
   res.render('index', { dataBike:dataBike });
 });
 
@@ -57,6 +68,25 @@ router.post('/update-shop', function(req, res, next) {
   console.log(req.body);
   req.session.dataCardBike[req.body.position].quantity = req.body.quantity;
   res.render('shop', {dataCardBike: req.session.dataCardBike});
+});
+
+router.post("/checkout", function(req,res,next){
+  // Set your secret key: remember to change this to your live secret key in production
+// See your keys here: https://dashboard.stripe.com/account/apikeys
+var stripe = require("stripe")("sk_test_02roSEKVv5MnNN6uiMwM5eBn");
+
+// Token is created using Checkout or Elements!
+// Get the payment token ID submitted by the form:
+const token = req.body.stripeToken; // Using Express
+
+const charge = stripe.charges.create({
+  amount: 100,
+  currency: 'eur',
+  description: 'Example charge',
+  source: token,
+});
+res.render("checkout")
+// , {req.session.dataCardBike[req.body.data-amount ]})
 });
 
 module.exports = router;

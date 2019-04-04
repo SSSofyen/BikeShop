@@ -73,7 +73,20 @@
       </div>
 
       <div class="row" id="card-checkout">
-        <div class="col-12 text-right"><button type="button" class="btn btn-outline-info btn-sm" name="button">Checkout</button></div>
+        <div class="col-12 text-right">
+          <form action="/checkout" method="POST">
+    <script
+      src="https://checkout.stripe.com/checkout.js" class="stripe-button"
+      data-key="pk_test_0me39UYc5SmOU2Ql6K9Nnfp8"
+      data-amount= "<%= totalCmd * 100%>"
+      data-name="Fu77ure"
+      data-description="Example charge"
+      data-image="https://stripe.com/img/documentation/checkout/marketplace.png"
+      data-locale="auto"
+      data-currency="eur">
+    </script>
+  </form>
+        </div>
       </div>
 
     </div>
